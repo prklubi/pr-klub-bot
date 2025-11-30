@@ -1,3 +1,5 @@
+import os
+import json
 import time
 import random
 from datetime import datetime
@@ -14,7 +16,11 @@ from pyzbar.pyzbar import decode as qr_decode
 # 1. SOZLAMALAR
 # =========================
 
-TOKEN = "8522650018:AAHy-X-Xisalwy0Su1Hh4QW4ItkFYF4ib-8"
+# TOKEN:
+# - Render'da bo'lsang: TOKEN environment variable'dan olinadi
+# - Kompyuteringda bo'lsang: pastdagi default qiymat ishlaydi
+TOKEN = os.environ.get("TOKEN", "8522650018:AAHy-X-Xisalwy0Su1Hh4QW4ItkFYF4ib-8")
+
 SERVICE_ACCOUNT_FILE = "service-account.json"
 SPREADSHEET_ID = "1DJcHKX6boO-kH9zTB63cSkRof4kemDEhZftx7AylvzA"
 CHANNEL_USERNAME = "@PR_klubi"
@@ -25,7 +31,7 @@ PHOTOS_SHEET = "Photos"
 ADMINS_SHEET = "Admins"
 
 # 🔐 Bot egasi (FAQAT shu ID broadcast va admin boshqaruvini qiladi)
-OWNER_ID = 123456789  # <<< O'ZING TELEGRAM ID'ingni shu yerga yoz
+OWNER_ID = 387178074  # <<< O'ZING TELEGRAM ID'ingni shu yerga yoz
 
 # Activities jadvalidagi statuslar
 STATUS_PENDING = "Kutilmoqda"
@@ -41,7 +47,15 @@ BACK_LABEL = "⬅️ Ortga qaytish"
 # =========================
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
-creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+
+# Render / hosting uchun: SERVICE_ACCOUNT_JSON ENV bo'lsa, shundan o'qiydi
+# Lokal kompyuterda bo'lsa: service-account.json faylidan o'qiydi
+if "SERVICE_ACCOUNT_JSON" in os.environ:
+    service_account_info = json.loads(os.environ["SERVICE_ACCOUNT_JSON"])
+    creds = Credentials.from_service_account_info(service_account_info, scopes=SCOPES)
+else:
+    creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+
 sheets_service = build("sheets", "v4", credentials=creds)
 sheet = sheets_service.spreadsheets()
 
@@ -1708,7 +1722,7 @@ def handle_photo_message(message):
 def handle_broadcast_media(message):
     user_id = message.from_user.id
 
-    if user_id == 387178074 and user_id in broadcast_state and broadcast_state[user_id]["stage"] == "wait_message":
+    if user_id == OWNER_ID and user_id in broadcast_state and broadcast_state[user_id]["stage"] == "wait_message":
         sent = broadcast_copy_message(message)
         del broadcast_state[user_id]
         bot.send_message(
