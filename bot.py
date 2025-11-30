@@ -1564,7 +1564,7 @@ def handle_text(message):
         if not student:
             bot.send_message(
                 message.chat.id,
-                "Avval kartangizdagi kodni yoki karta ustidagi QR kodni yuborib ro'yxatdan o'ting.",
+                "Avval HEMIS loginingizni kiritib ro'yxatdan o'ting.",
                 reply_markup=restart_only_keyboard()
             )
             return
@@ -1584,7 +1584,7 @@ def handle_text(message):
         if not student:
             bot.send_message(
                 message.chat.id,
-                "Avval kartangiz kodini yoki karta ustidagi QR kodni yuborib ro'yxatdan o'ting.",
+                "Avval HEMIS loginingizni kiritib ro'yxatdan o'ting.",
                 reply_markup=restart_only_keyboard()
             )
             return
@@ -1696,7 +1696,7 @@ def handle_photo_message(message):
             bot.send_message(
                 message.chat.id,
                 "❌ QR kodni o'qib bo'lmadi.\n"
-                "Karta raqamini matn ko'rinishida yuboring yoki yanada aniqroq QR rasm yuboring."
+                "HEMIS loginingizni kiriting"
             )
             return
 
@@ -1756,4 +1756,5 @@ while True:
     except Exception as e:
         print("Polling error:", e)
         time.sleep(3)
+
 
