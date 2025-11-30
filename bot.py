@@ -880,7 +880,7 @@ def handle_start(message):
     else:
         bot.send_message(
             message.chat.id,
-            "Assalomu alaykum! 😊\n"
+            "Assalomu alaykum! \n"
             "Ushbu bot'dan foydalanish uchun HEMIS loginingizni kiriting",
             reply_markup=restart_only_keyboard()
         )
@@ -1754,6 +1754,7 @@ while True:
     except Exception as e:
         print("Polling error:", e)
         time.sleep(3)
+
 
 
 
