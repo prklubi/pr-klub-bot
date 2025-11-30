@@ -742,7 +742,7 @@ def register_by_card_code(user_id: int, chat_id: int, card_code: str):
     if not row:
         bot.send_message(
             chat_id,
-            f"❌ {card_code} kodli karta topilmadi.\n"
+            f"❌ {card_code} kodli HEMIS logini topilmadi.\n"
             "Kod to'g'ri yozilganini tekshirib, qayta yuboring."
         )
         return
@@ -754,7 +754,7 @@ def register_by_card_code(user_id: int, chat_id: int, card_code: str):
     if existing_tg and existing_tg != str(user_id):
         bot.send_message(
             chat_id,
-            "❌ Bu karta kodi allaqachon boshqa Telegram akkauntiga bog'langan.\n"
+            "❌ Bu HEMIS logini allaqachon boshqa Telegram akkauntiga bog'langan.\n"
             "Agar Telegram akkauntingiz o'zgargan bo'lsa yoki bu xato deb o'ylasangiz, iltimos admin bilan bog'laning."
         )
         return
@@ -766,7 +766,7 @@ def register_by_card_code(user_id: int, chat_id: int, card_code: str):
         "🎉 Tabriklayman, siz ro'yxatdan o'tdingiz!\n\n"
         f"Ism-familiya: {info['full_name']}\n"
         f"Talaba ID: {info['id']}\n"
-        f"Karta: {info['card_code']}\n"
+        f"HEMIS login: {info['card_code']}\n"
         f"Guruh: {info['group_number']}\n"
         f"Ball: {info['total_points']}",
         reply_markup=main_menu()
@@ -785,7 +785,7 @@ def admin_lookup_by_card_code(admin_id: int, chat_id: int, card_code: str):
     if not row:
         bot.send_message(
             chat_id,
-            f"❌ {card_code} kodli karta topilmadi.\n"
+            f"❌ {card_code} kodli HEMIS logini topilmadi.\n"
             "Kod to'g'ri yozilganini tekshirib, qayta yuboring."
         )
         return
@@ -806,7 +806,7 @@ def admin_lookup_by_card_code(admin_id: int, chat_id: int, card_code: str):
         "👤 <b>Talaba ma'lumotlari:</b>",
         f"Ism-familiya: {full_name}",
         f"Talaba ID: {student_id}",
-        f"Karta: {card_code}",
+        f"HEMIS logini: {card_code}",
         f"Guruh: {group_number}",
         f"Ball: {total_points}",
         f"Faolliklar soni: {count_acts}",
@@ -872,7 +872,7 @@ def handle_start(message):
             message.chat.id,
             f"Assalomu alaykum, {student['full_name']}!\n\n"
             f"ID: {student['id']}\n"
-            f"Karta: {student['card_code']}\n"
+            f"HEMIS logini: {student['card_code']}\n"
             f"Guruh: {student['group_number']}\n"
             f"Ball: {student['total_points']}",
             reply_markup=main_menu()
@@ -983,7 +983,7 @@ def send_next_pending_activity(admin_id: int, chat_id: int):
             "👤 <b>Talaba:</b>",
             f"Ismi: {student['full_name']}",
             f"Guruh: {student['group_number']}",
-            f"Karta: {student['card_code']}",
+            f"HEMIS logini: {student['card_code']}",
             f"Jami ball: {student['total_points']}",
             "",
         ]
@@ -1571,7 +1571,7 @@ def handle_text(message):
             f"Profilingiz:\n\n"
             f"Ism: {student['full_name']}\n"
             f"ID: {student['id']}\n"
-            f"Karta: {student['card_code']}\n"
+            f"HEMIS logini: {student['card_code']}\n"
             f"Guruh: {student['group_number']}\n"
             f"Ball: {student['total_points']}",
             reply_markup=main_menu()
@@ -1754,6 +1754,7 @@ while True:
     except Exception as e:
         print("Polling error:", e)
         time.sleep(3)
+
 
 
 
