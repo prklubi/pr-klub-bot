@@ -10,15 +10,23 @@ from telebot import types
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from PIL import Image
-from pyzbar.pyzbar import decode as qr_decode
+
+# QR kod o'qish uchun pyzbar (lekin serverda zbar bo'lmasa, QR o'chiriladi)
+try:
+    from pyzbar.pyzbar import decode as qr_decode
+    QR_AVAILABLE = True
+except Exception as e:
+    print("pyzbar/zbar yuklanmadi, QR o‘qish vaqtincha o‘chiriladi:", e)
+    qr_decode = None
+    QR_AVAILABLE = False
 
 # =========================
 # 1. SOZLAMALAR
 # =========================
 
 # TOKEN:
-# - Render'da bo'lsang: TOKEN environment variable'dan olinadi
-# - Kompyuteringda bo'lsang: pastdagi default qiymat ishlaydi
+# - Render'da bo'lsang: TOKEN environment'dan olinadi
+# - Lokal kompyuteringda: shu yerda yozilgan qiymat ishlaydi
 TOKEN = os.environ.get("TOKEN", "8522650018:AAHy-X-Xisalwy0Su1Hh4QW4ItkFYF4ib-8")
 
 SERVICE_ACCOUNT_FILE = "service-account.json"
@@ -31,7 +39,7 @@ PHOTOS_SHEET = "Photos"
 ADMINS_SHEET = "Admins"
 
 # 🔐 Bot egasi (FAQAT shu ID broadcast va admin boshqaruvini qiladi)
-OWNER_ID = 387178074  # <<< O'ZING TELEGRAM ID'ingni shu yerga yoz
+OWNER_ID = 387178074  # O'zingning Telegram ID'ing shu yerda
 
 # Activities jadvalidagi statuslar
 STATUS_PENDING = "Kutilmoqda"
@@ -48,8 +56,8 @@ BACK_LABEL = "⬅️ Ortga qaytish"
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
-# Render / hosting uchun: SERVICE_ACCOUNT_JSON ENV bo'lsa, shundan o'qiydi
-# Lokal kompyuterda bo'lsa: service-account.json faylidan o'qiydi
+# Agar SERVICE_ACCOUNT_JSON env bor bo'lsa (Render) – shundan o'qiydi
+# Aks holda lokal fayl (kompyuteringdagi service-account.json) dan o'qiydi
 if "SERVICE_ACCOUNT_JSON" in os.environ:
     service_account_info = json.loads(os.environ["SERVICE_ACCOUNT_JSON"])
     creds = Credentials.from_service_account_info(service_account_info, scopes=SCOPES)
@@ -98,6 +106,11 @@ ADMINS_CACHE_TTL = 3600  # 🔁 1 soat
 # =========================
 
 def decode_card_from_qr_bytes(file_bytes):
+    # Agar QR_AVAILABLE = False bo'lsa (Render'da libzbar yo'q bo'lsa) –
+    # har doim None qaytaramiz va foydalanuvchidan karta raqamini qo'lda so'raymiz.
+    if not QR_AVAILABLE:
+        return None
+
     try:
         img = Image.open(BytesIO(file_bytes))
         codes = qr_decode(img)
