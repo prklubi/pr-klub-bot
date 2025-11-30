@@ -881,9 +881,7 @@ def handle_start(message):
         bot.send_message(
             message.chat.id,
             "Assalomu alaykum! 😊\n"
-            "Klub a'zosi sifatida ro'yxatdan o'tish uchun kartangizdagi raqamni "
-            "yoki karta ustidagi QR kod rasmini yuboring.\n"
-            "Masalan: <b>A2024-001</b>",
+            "Ushbu bot'dan foydalanish uchun HEMIS loginingizni kiriting",
             reply_markup=restart_only_keyboard()
         )
 
@@ -1037,7 +1035,7 @@ def handle_admin_flow(message):
             state["stage"] = "wait_card"
             bot.send_message(
                 message.chat.id,
-                "HEMIS loginingizni kiriting",
+                "Talabaning HEMIS loginini kiriting",
                 reply_markup=restart_only_keyboard()
             )
             return
@@ -1756,5 +1754,6 @@ while True:
     except Exception as e:
         print("Polling error:", e)
         time.sleep(3)
+
 
 
