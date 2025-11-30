@@ -1037,8 +1037,7 @@ def handle_admin_flow(message):
             state["stage"] = "wait_card"
             bot.send_message(
                 message.chat.id,
-                "Talabaning karta raqamini yoki karta ustidagi QR kod rasmini yuboring "
-                "(masalan: A2024-001).",
+                "HEMIS loginingizni kiriting",
                 reply_markup=restart_only_keyboard()
             )
             return
@@ -1757,3 +1756,4 @@ while True:
     except Exception as e:
         print("Polling error:", e)
         time.sleep(3)
+
