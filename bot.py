@@ -96,7 +96,7 @@ photos_cache = {"data": [], "loaded_at": 0}
 PHOTOS_CACHE_TTL = 60  # 1 daqiqa
 
 membership_cache = {}     # {user_id: {"is_member": bool, "checked_at": ts}}
-MEMBERSHIP_CACHE_TTL = 24 * 60 * 60   # 1 kun
+MEMBERSHIP_CACHE_TTL = 60  
 
 admins_cache = {"ids": set(), "loaded_at": 0}
 ADMINS_CACHE_TTL = 3600  # 🔁 1 soat
@@ -1754,6 +1754,7 @@ while True:
     except Exception as e:
         print("Polling error:", e)
         time.sleep(3)
+
 
 
 
